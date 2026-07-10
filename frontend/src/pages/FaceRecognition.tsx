@@ -18,14 +18,8 @@ const FaceRecognition: React.FC = () => {
       setMatchingStatus('scanning');
       setMatchedStudent(null);
 
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 } } });
       mediaStreamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.setAttribute('playsinline', 'true');
-        videoRef.current.muted = true;
-        videoRef.current.play().catch(err => console.log("Play failed:", err));
-      }
       setIsActive(true);
     } catch (err) {
       console.error("Camera access failed:", err);
@@ -34,10 +28,24 @@ const FaceRecognition: React.FC = () => {
     }
   };
 
+  // Bind stream after video element mounts in DOM
+  useEffect(() => {
+    if (isActive && videoRef.current && mediaStreamRef.current) {
+      const video = videoRef.current;
+      video.srcObject = mediaStreamRef.current;
+      video.setAttribute('playsinline', 'true');
+      video.muted = true;
+      video.play().catch(err => console.log("Video playback error:", err));
+    }
+  }, [isActive]);
+
   const stopWebcam = () => {
     if (mediaStreamRef.current) {
       mediaStreamRef.current.getTracks().forEach(track => track.stop());
       mediaStreamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
     }
     setIsActive(false);
     setMatchingStatus('idle');

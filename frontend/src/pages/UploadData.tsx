@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Camera, Image, Check, X, ShieldAlert } from 'lucide-react';
 import { API_BASE_URL } from '../config';
@@ -23,20 +23,25 @@ const UploadData: React.FC = () => {
   const startWebcam = async () => {
     try {
       setErrorMsg('');
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 } } });
       mediaStreamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.setAttribute('playsinline', 'true');
-        videoRef.current.muted = true;
-        videoRef.current.play().catch(err => console.log("Play failed:", err));
-      }
       setIsCameraActive(true);
     } catch (err) {
       console.error("Camera access failed:", err);
       setErrorMsg("Camera access denied. Please verify permissions.");
     }
   };
+
+  // Bind stream after the video DOM element mounts
+  useEffect(() => {
+    if (isCameraActive && videoRef.current && mediaStreamRef.current) {
+      const video = videoRef.current;
+      video.srcObject = mediaStreamRef.current;
+      video.setAttribute('playsinline', 'true');
+      video.muted = true;
+      video.play().catch(err => console.log("Video playback error:", err));
+    }
+  }, [isCameraActive]);
 
   const capturePhoto = () => {
     const video = videoRef.current;
@@ -58,6 +63,9 @@ const UploadData: React.FC = () => {
     if (mediaStreamRef.current) {
       mediaStreamRef.current.getTracks().forEach(track => track.stop());
       mediaStreamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
     }
     setIsCameraActive(false);
   };
