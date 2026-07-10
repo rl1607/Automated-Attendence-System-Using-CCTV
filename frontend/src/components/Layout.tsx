@@ -3,8 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import { 
-  LayoutDashboard, Camera, Users, GraduationCap, CalendarDays, 
-  FileSpreadsheet, BarChart3, MessageSquare, Settings2, ShieldAlert,
+  Home, Upload, Camera, Database, MessageSquare, CalendarDays, Video,
   Menu, X, Bell, LogOut, Sun, Moon, Search
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,16 +19,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [globalSearch, setGlobalSearch] = useState('');
 
   const menuItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, path: '/', roles: ['super_admin', 'admin', 'faculty', 'student'] },
-    { name: 'CCTV Control Room', icon: Camera, path: '/cctv', roles: ['super_admin', 'admin', 'faculty'] },
-    { name: 'Student Directory', icon: GraduationCap, path: '/students', roles: ['super_admin', 'admin', 'faculty'] },
-    { name: 'Faculty Directory', icon: Users, path: '/faculty', roles: ['super_admin', 'admin'] },
-    { name: 'Timetable Slots', icon: CalendarDays, path: '/timetable', roles: ['super_admin', 'admin', 'faculty'] },
-    { name: 'Reports & Export', icon: FileSpreadsheet, path: '/reports', roles: ['super_admin', 'admin', 'faculty', 'student'] },
-    { name: 'Analytics Telemetry', icon: BarChart3, path: '/analytics', roles: ['super_admin', 'admin'] },
-    { name: 'Message Dispatcher', icon: MessageSquare, path: '/messages', roles: ['super_admin', 'admin', 'faculty'] },
-    { name: 'Audit History', icon: ShieldAlert, path: '/audit-logs', roles: ['super_admin'] },
-    { name: 'System Settings', icon: Settings2, path: '/settings', roles: ['super_admin', 'admin'] },
+    { name: 'Home', icon: Home, path: '/', roles: ['super_admin', 'admin', 'faculty', 'student'] },
+    { name: 'Upload Data', icon: Upload, path: '/upload-data', roles: ['super_admin', 'admin', 'faculty'] },
+    { name: 'Face Recognition', icon: Camera, path: '/face-recognition', roles: ['super_admin', 'admin', 'faculty'] },
+    { name: 'Data Store', icon: Database, path: '/data-store', roles: ['super_admin', 'admin', 'faculty', 'student'] },
+    { name: 'Messages', icon: MessageSquare, path: '/messages', roles: ['super_admin', 'admin', 'faculty'] },
+    { name: 'Timetable', icon: CalendarDays, path: '/timetable', roles: ['super_admin', 'admin', 'faculty'] },
+    { name: 'CCTV', icon: Video, path: '/cctv', roles: ['super_admin', 'admin', 'faculty'] },
   ];
 
   const handleToggleTheme = () => {

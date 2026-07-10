@@ -4,18 +4,15 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import Layout from './components/Layout';
 
-// Pages lazy-like definitions
+// Pages simplified definitions
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import CCTV from './pages/CCTV';
-import Students from './pages/Students';
-import Faculty from './pages/Faculty';
-import TimetableSlots from './pages/Timetable';
-import Reports from './pages/Reports';
-import Analytics from './pages/Analytics';
+import UploadData from './pages/UploadData';
+import FaceRecognition from './pages/FaceRecognition';
+import DataStore from './pages/DataStore';
 import Messages from './pages/Messages';
-import Settings from './pages/Settings';
-import AuditLogs from './pages/AuditLogs';
+import TimetableSlots from './pages/Timetable';
+import CCTV from './pages/CCTV';
 
 // Helper Route Guard Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode, allowedRoles?: string[] }> = ({ children, allowedRoles }) => {
@@ -55,21 +52,27 @@ const App: React.FC = () => {
               </ProtectedRoute>
             } />
             
-            <Route path="/cctv" element={
+            <Route path="/upload-data" element={
               <ProtectedRoute allowedRoles={['super_admin', 'admin', 'faculty']}>
-                <CCTV />
+                <UploadData />
               </ProtectedRoute>
             } />
-            
-            <Route path="/students" element={
+
+            <Route path="/face-recognition" element={
               <ProtectedRoute allowedRoles={['super_admin', 'admin', 'faculty']}>
-                <Students />
+                <FaceRecognition />
               </ProtectedRoute>
             } />
-            
-            <Route path="/faculty" element={
-              <ProtectedRoute allowedRoles={['super_admin', 'admin']}>
-                <Faculty />
+
+            <Route path="/data-store" element={
+              <ProtectedRoute>
+                <DataStore />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/messages" element={
+              <ProtectedRoute allowedRoles={['super_admin', 'admin', 'faculty']}>
+                <Messages />
               </ProtectedRoute>
             } />
             
@@ -78,34 +81,10 @@ const App: React.FC = () => {
                 <TimetableSlots />
               </ProtectedRoute>
             } />
-            
-            <Route path="/reports" element={
-              <ProtectedRoute>
-                <Reports />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/analytics" element={
-              <ProtectedRoute allowedRoles={['super_admin', 'admin']}>
-                <Analytics />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/messages" element={
+
+            <Route path="/cctv" element={
               <ProtectedRoute allowedRoles={['super_admin', 'admin', 'faculty']}>
-                <Messages />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/audit-logs" element={
-              <ProtectedRoute allowedRoles={['super_admin']}>
-                <AuditLogs />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/settings" element={
-              <ProtectedRoute allowedRoles={['super_admin', 'admin']}>
-                <Settings />
+                <CCTV />
               </ProtectedRoute>
             } />
 
