@@ -53,7 +53,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="p-4 flex items-center justify-between border-b border-slate-200 dark:border-darkbg-border">
           {isOpen ? (
             <span className="font-bold text-lg tracking-wider bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
-              SECURE ATTEND
+              Attendence Tracker
             </span>
           ) : (
             <span className="font-bold text-lg text-brand-500">👁️</span>
