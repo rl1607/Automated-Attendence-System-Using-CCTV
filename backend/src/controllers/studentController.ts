@@ -19,18 +19,25 @@ export const createStudent = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Student with this USN already exists' });
     }
 
-    // Create User account for student
-    const passwordHash = await bcrypt.hash('student123', 10);
-    const user = await User.create({
-      email,
-      passwordHash,
-      role: 'student',
-      name,
-      isVerified: true
-    });
+    // Create User account for student safely
+    const userExisting = await User.findOne({ email });
+    let userId;
+    if (userExisting) {
+      userId = userExisting._id;
+    } else {
+      const passwordHash = await bcrypt.hash('student123', 10);
+      const user = await User.create({
+        email,
+        passwordHash,
+        role: 'student',
+        name,
+        isVerified: true
+      });
+      userId = user._id;
+    }
 
     const student = await Student.create({
-      user: user._id,
+      user: userId,
       name,
       usn,
       rollNumber,

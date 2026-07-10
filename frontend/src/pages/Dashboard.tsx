@@ -27,11 +27,15 @@ const Dashboard: React.FC = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const studentsRes = await axios.get(`${API_BASE_URL}/api/students`);
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      const studentsRes = await axios.get(`${API_BASE_URL}/api/students`, { headers });
       setStudents(studentsRes.data);
 
       const logsRes = await axios.get(`${API_BASE_URL}/api/attendance/logs`, {
-        params: { date: selectedDate }
+        params: { date: selectedDate },
+        headers
       });
       setAttendanceLogs(logsRes.data);
     } catch (err) {

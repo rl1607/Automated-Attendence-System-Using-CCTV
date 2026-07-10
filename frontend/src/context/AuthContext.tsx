@@ -59,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setToken('mock-jwt-token-xyz');
         localStorage.setItem('user', JSON.stringify(mockUser));
         localStorage.setItem('token', 'mock-jwt-token-xyz');
+        axios.defaults.headers.common['Authorization'] = 'Bearer mock-jwt-token-xyz';
         return;
       }
       throw new Error(err.response?.data?.message || 'Login failed. Connect a DB or use admin / admin credentials.');

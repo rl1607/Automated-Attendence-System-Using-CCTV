@@ -11,19 +11,27 @@ const DataStore: React.FC = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/api/students`, { params: { search } });
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${API_BASE_URL}/api/students`, { 
+        params: { search },
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       setStudents(res.data);
     } catch (err) {
       setStudents([
-        { _id: '1', name: 'Aditya Kumar', usn: '1RV22CS004', section: 'CSE-4A', phone: '9845120345', email: 'aditya@rvce.edu.in' },
-        { _id: '2', name: 'Neha Sharma', usn: '1RV22CS032', section: 'CSE-4A', phone: '8124095431', email: 'neha@rvce.edu.in' }
+        { _id: '1', name: 'Aditya Kumar', usn: '1RV22CS004', section: 'A', department: 'CSE', semester: 4, phone: '9845120345', email: 'aditya@rvce.edu.in' },
+        { _id: '2', name: 'Neha Sharma', usn: '1RV22CS032', section: 'A', department: 'CSE', semester: 4, phone: '8124095431', email: 'neha@rvce.edu.in' }
       ]);
     }
   };
 
   const fetchAttendance = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/api/attendance/logs`, { params: { name: search, usn: search } });
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${API_BASE_URL}/api/attendance/logs`, { 
+        params: { name: search, usn: search },
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       setAttendance(res.data);
     } catch (err) {
       setAttendance([
@@ -44,7 +52,10 @@ const DataStore: React.FC = () => {
   const handleDeleteStudent = async (usn: string) => {
     if (!window.confirm("Remove student from database?")) return;
     try {
-      await axios.delete(`${API_BASE_URL}/api/students/${usn}`);
+      const token = localStorage.getItem('token');
+      await axios.delete(`${API_BASE_URL}/api/students/${usn}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       fetchStudents();
     } catch (err) {
       setStudents(prev => prev.filter(s => s.usn !== usn));
@@ -124,9 +135,10 @@ const DataStore: React.FC = () => {
                 <tr className="border-b border-slate-200 dark:border-darkbg-border text-xs text-slate-400">
                   <th className="py-2.5">USN</th>
                   <th className="py-2.5">Full Name</th>
+                  <th className="py-2.5">Branch</th>
+                  <th className="py-2.5">Semester</th>
                   <th className="py-2.5">Class / Section</th>
                   <th className="py-2.5">Mobile</th>
-                  <th className="py-2.5">Email</th>
                   <th className="py-2.5 text-right">Action</th>
                 </tr>
               </thead>
@@ -135,9 +147,10 @@ const DataStore: React.FC = () => {
                   <tr key={stud._id} className="hover:bg-slate-50 dark:hover:bg-brand-950/10 transition">
                     <td className="py-3 font-semibold text-white">{stud.usn}</td>
                     <td className="py-3 text-slate-300">{stud.name}</td>
+                    <td className="py-3 text-slate-400">{stud.department || 'General'}</td>
+                    <td className="py-3 text-slate-400">Sem {stud.semester || 1}</td>
                     <td className="py-3 text-slate-400">{stud.section}</td>
                     <td className="py-3 text-slate-400">{stud.phone}</td>
-                    <td className="py-3 text-slate-400">{stud.email}</td>
                     <td className="py-3 text-right">
                       <button 
                         onClick={() => handleDeleteStudent(stud.usn)}

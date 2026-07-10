@@ -9,6 +9,8 @@ const UploadData: React.FC = () => {
   const [className, setClassName] = useState('');
   const [studentMobile, setStudentMobile] = useState('');
   const [parentMobile, setParentMobile] = useState('');
+  const [branch, setBranch] = useState('Computer Science');
+  const [semester, setSemester] = useState(1);
   
   // Photo states
   const [photo, setPhoto] = useState<string | null>(null);
@@ -98,10 +100,10 @@ const UploadData: React.FC = () => {
         name,
         usn,
         rollNumber: '0', // fallback roll
-        department: 'General', 
-        semester: 1, 
+        department: branch, 
+        semester: semester, 
         section: className || 'A', 
-        email: `${usn.toLowerCase()}@college.edu`,
+        email: `${usn.toLowerCase().replace(/\s/g, '')}@college.edu`,
         phone: studentMobile,
         parentName: 'Parent',
         parentPhone: parentMobile,
@@ -112,13 +114,18 @@ const UploadData: React.FC = () => {
         photos: [photo]
       };
 
-      await axios.post(`${API_BASE_URL}/api/students`, payload);
+      const token = localStorage.getItem('token');
+      await axios.post(`${API_BASE_URL}/api/students`, payload, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       setSuccessMsg("Student registered and face signature saved!");
       setName('');
       setUsn('');
       setClassName('');
       setStudentMobile('');
       setParentMobile('');
+      setBranch('Computer Science');
+      setSemester(1);
       setPhoto(null);
     } catch (err: any) {
       // Mock local fallback
@@ -128,6 +135,8 @@ const UploadData: React.FC = () => {
       setClassName('');
       setStudentMobile('');
       setParentMobile('');
+      setBranch('Computer Science');
+      setSemester(1);
       setPhoto(null);
     }
   };
@@ -170,6 +179,19 @@ const UploadData: React.FC = () => {
           <div>
             <label className="block text-slate-400 text-xs font-bold mb-1">Class</label>
             <input required type="text" placeholder="Enter student's class" value={className} onChange={(e) => setClassName(e.target.value)} className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-white focus:outline-none" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-slate-400 text-xs font-bold mb-1">Branch</label>
+              <input required type="text" placeholder="e.g. CSE, ECE" value={branch} onChange={(e) => setBranch(e.target.value)} className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-white focus:outline-none" />
+            </div>
+            <div>
+              <label className="block text-slate-400 text-xs font-bold mb-1">Semester</label>
+              <select value={semester} onChange={(e) => setSemester(Number(e.target.value))} className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-white focus:outline-none">
+                {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>Semester {s}</option>)}
+              </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
