@@ -1,4 +1,4 @@
-# Attendance Tracker 👁️
+# Attendance Tracker 
 
 This is an automated attendance system that uses face recognition and camera to mark students' attendance in real time.
 
