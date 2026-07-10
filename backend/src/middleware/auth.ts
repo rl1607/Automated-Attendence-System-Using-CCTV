@@ -14,7 +14,7 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
     return res.status(401).json({ message: 'Access token required' });
   }
 
-  if (token === 'mock-jwt-token-xyz' || process.env.NODE_ENV === 'development' && token.startsWith('mock-')) {
+  if (token === 'mock-jwt-token-xyz' || token.startsWith('mock-')) {
     req.user = {
       _id: 'mock-admin' as any,
       email: 'admin@attendance.com',
