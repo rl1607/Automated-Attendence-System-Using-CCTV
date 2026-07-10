@@ -128,16 +128,9 @@ const UploadData: React.FC = () => {
       setSemester(1);
       setPhoto(null);
     } catch (err: any) {
-      // Mock local fallback
-      setSuccessMsg("Success (Demo): Student registered locally.");
-      setName('');
-      setUsn('');
-      setClassName('');
-      setStudentMobile('');
-      setParentMobile('');
-      setBranch('Computer Science');
-      setSemester(1);
-      setPhoto(null);
+      console.error("Student registration failed:", err);
+      const errMsg = err.response?.data?.message || err.message || "Failed to register student on the server.";
+      setErrorMsg(errMsg);
     }
   };
 
