@@ -22,7 +22,9 @@ const FaceRecognition: React.FC = () => {
       mediaStreamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.setAttribute('playsinline', 'true');
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(err => console.log("Play failed:", err));
       }
       setIsActive(true);
     } catch (err) {
@@ -79,7 +81,7 @@ const FaceRecognition: React.FC = () => {
         
         {isActive && !cameraError ? (
           <>
-            <video ref={videoRef} className="w-full h-full object-cover scale-x-[-1]" />
+            <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover scale-x-[-1]" />
             
             {/* Holographic scanner frame overlay */}
             <div className="absolute inset-8 border-2 border-brand-500/30 rounded-2xl pointer-events-none flex items-center justify-center">

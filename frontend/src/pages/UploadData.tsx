@@ -27,7 +27,9 @@ const UploadData: React.FC = () => {
       mediaStreamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.setAttribute('playsinline', 'true');
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(err => console.log("Play failed:", err));
       }
       setIsCameraActive(true);
     } catch (err) {
@@ -37,11 +39,14 @@ const UploadData: React.FC = () => {
   };
 
   const capturePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (video && canvas) {
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
         setPhoto(dataUrl);
         stopWebcam();
@@ -176,7 +181,7 @@ const UploadData: React.FC = () => {
             
             {isCameraActive ? (
               <div className="flex flex-col items-center gap-3 p-3 bg-slate-900 border border-slate-800 rounded-xl relative">
-                <video ref={videoRef} className="w-full max-h-48 rounded object-cover scale-x-[-1]" />
+                <video ref={videoRef} autoPlay playsInline muted className="w-full max-h-48 rounded object-cover scale-x-[-1]" />
                 <canvas ref={canvasRef} width="640" height="480" className="hidden" />
                 <div className="flex gap-2 w-full">
                   <button type="button" onClick={capturePhoto} className="flex-1 py-2 bg-brand-600 text-white rounded text-xs font-bold">Snap Image</button>
