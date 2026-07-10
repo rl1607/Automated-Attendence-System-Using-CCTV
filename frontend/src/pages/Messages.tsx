@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Send, MessageSquare, History, CheckCircle, Sparkles } from 'lucide-react';
@@ -14,7 +15,7 @@ const Messages: React.FC = () => {
 
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/system/messages');
+      const res = await axios.get(`${API_BASE_URL}/api/system/messages`);
       setHistory(res.data);
     } catch (err) {
       console.warn("Using local mockup messaging history.");
@@ -33,7 +34,7 @@ const Messages: React.FC = () => {
     e.preventDefault();
     try {
       const payload = { recipient, content, channel, type };
-      await axios.post('http://localhost:5000/api/system/message', payload);
+      await axios.post(`${API_BASE_URL}/api/system/message`, payload);
       setSuccess(true);
       setRecipient('');
       setContent('');

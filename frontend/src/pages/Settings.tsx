@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Settings as SettingsIcon, Save, Key, Sliders, BellRing, Palette } from 'lucide-react';
@@ -28,7 +29,7 @@ const Settings: React.FC = () => {
 
   const fetchSettings = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/system/settings');
+      const res = await axios.get(`${API_BASE_URL}/api/system/settings`);
       const data = res.data;
       setRecognitionConfidence(data.recognitionConfidence);
       setCameraFPS(data.cameraFPS);
@@ -67,7 +68,7 @@ const Settings: React.FC = () => {
         whatsAppSettings: { providerUrl, providerToken },
         theme
       };
-      await axios.put('http://localhost:5000/api/system/settings', payload);
+      await axios.put(`${API_BASE_URL}/api/system/settings`, payload);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {

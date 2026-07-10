@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Plus, Search, Trash2, XCircle } from 'lucide-react';
@@ -16,7 +17,7 @@ const Faculty: React.FC = () => {
 
   const fetchFaculty = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/faculty', { params: { search } });
+      const res = await axios.get(`${API_BASE_URL}/api/faculty`, { params: { search } });
       setFaculty(res.data);
     } catch (err) {
       console.warn("API faculty fetch failed, using fallback list.");
@@ -41,7 +42,7 @@ const Faculty: React.FC = () => {
         department,
         subjects: subjects.split(',').map(s => s.trim())
       };
-      await axios.post('http://localhost:5000/api/faculty', payload);
+      await axios.post(`${API_BASE_URL}/api/faculty`, payload);
       setShowAddForm(false);
       setName('');
       setEmail('');

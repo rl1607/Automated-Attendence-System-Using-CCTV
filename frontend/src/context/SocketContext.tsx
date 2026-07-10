@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { SOCKET_URL } from '../config';
 
 interface SocketNotification {
   id: string;
@@ -23,7 +24,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [notifications, setNotifications] = useState<SocketNotification[]>([]);
 
   useEffect(() => {
-    const socketInstance = io('http://localhost:5000');
+    const socketInstance = io(SOCKET_URL);
     setSocket(socketInstance);
 
     socketInstance.on('new_attendance', (data: any) => {

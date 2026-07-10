@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
@@ -18,7 +19,7 @@ const Analytics: React.FC = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/system/analytics');
+        const res = await axios.get(`${API_BASE_URL}/api/system/analytics`);
         setTelemetry(res.data);
       } catch (err) {
         console.warn("Using local fallback telemetry dataset.");

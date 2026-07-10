@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
@@ -151,7 +152,7 @@ const Students: React.FC = () => {
         photos: capturedPhotos
       };
 
-      await axios.post('http://localhost:5000/api/students', payload);
+      await axios.post(`${API_BASE_URL}/api/students`, payload);
       setSuccessMsg("Student registered and face embeddings generated successfully!");
       setShowRegForm(false);
       reset();

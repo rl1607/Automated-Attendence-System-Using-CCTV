@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
@@ -30,22 +31,22 @@ const TimetableSlots: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const slotsRes = await axios.get('http://localhost:5000/api/timetable');
+      const slotsRes = await axios.get(`${API_BASE_URL}/api/timetable`);
       setSlots(slotsRes.data);
 
-      const camsRes = await axios.get('http://localhost:5000/api/cameras');
+      const camsRes = await axios.get(`${API_BASE_URL}/api/cameras`);
       setCameras(camsRes.data);
 
-      const subRes = await axios.get('http://localhost:5000/api/subjects');
+      const subRes = await axios.get(`${API_BASE_URL}/api/subjects`);
       setSubjects(subRes.data);
 
-      const facRes = await axios.get('http://localhost:5000/api/faculty');
+      const facRes = await axios.get(`${API_BASE_URL}/api/faculty`);
       setFaculties(facRes.data);
 
-      const depRes = await axios.get('http://localhost:5000/api/departments');
+      const depRes = await axios.get(`${API_BASE_URL}/api/departments`);
       setDepartments(depRes.data);
 
-      const semRes = await axios.get('http://localhost:5000/api/semesters');
+      const semRes = await axios.get(`${API_BASE_URL}/api/semesters`);
       setSemesters(semRes.data);
     } catch (err) {
       console.warn("Using local mockup timetable datasets.");
@@ -75,7 +76,7 @@ const TimetableSlots: React.FC = () => {
         startTime,
         endTime
       };
-      await axios.post('http://localhost:5000/api/timetable', payload);
+      await axios.post(`${API_BASE_URL}/api/timetable`, payload);
       setShowAddForm(false);
       fetchData();
     } catch (err) {
@@ -121,7 +122,7 @@ const TimetableSlots: React.FC = () => {
       });
 
       try {
-        await axios.post('http://localhost:5000/api/timetable/bulk', { entries });
+        await axios.post(`${API_BASE_URL}/api/timetable/bulk`, { entries });
         setSuccessMsg(`Timetable populated: ${entries.length} classes loaded!`);
         fetchData();
       } catch (err) {
@@ -144,7 +145,7 @@ const TimetableSlots: React.FC = () => {
 
   const handleStartAttendance = async (slotId: string) => {
     try {
-      await axios.post('http://localhost:5000/api/attendance/session/start', { timetableId: slotId });
+      await axios.post(`${API_BASE_URL}/api/attendance/session/start`, { timetableId: slotId });
       alert("Attendance session started! Cameras are now listening for face inputs.");
     } catch (err) {
       alert("Demo Session Started: Webcam processing activated.");

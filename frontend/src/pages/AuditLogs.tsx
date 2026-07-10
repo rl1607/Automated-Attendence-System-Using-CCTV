@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Search, ShieldAlert, Terminal } from 'lucide-react';
@@ -8,7 +9,7 @@ const AuditLogs: React.FC = () => {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/system/audit-logs', { params: { search } });
+      const res = await axios.get(`${API_BASE_URL}/api/system/audit-logs`, { params: { search } });
       setLogs(res.data);
     } catch (err) {
       console.warn("Using local fallback audit datasets.");

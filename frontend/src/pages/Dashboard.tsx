@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { 
   Users, Video, UserCheck, AlertTriangle, ShieldCheck, 
   Calendar, Clock, CheckCircle2, XCircle
@@ -54,14 +55,14 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const statsRes = await axios.get('http://localhost:5000/api/system/dashboard-stats');
+        const statsRes = await axios.get(`${API_BASE_URL}/api/system/dashboard-stats`);
         setMetrics(statsRes.data.metrics);
         setAnalytics(statsRes.data.analytics);
 
-        const logsRes = await axios.get('http://localhost:5000/api/attendance/logs');
+        const logsRes = await axios.get(`${API_BASE_URL}/api/attendance/logs`);
         setAttendanceLogs(logsRes.data.slice(0, 5));
 
-        const unknownsRes = await axios.get('http://localhost:5000/api/attendance/unknown-faces');
+        const unknownsRes = await axios.get(`${API_BASE_URL}/api/attendance/unknown-faces`);
         setRecentUnknowns(unknownsRes.data.slice(0, 3));
       } catch (err) {
         console.warn("⚠️ Using local mock data because backend API is offline.");

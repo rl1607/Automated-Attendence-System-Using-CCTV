@@ -17,9 +17,11 @@ interface AuthContextType {
   hasRole: (roles: Array<'super_admin' | 'admin' | 'faculty' | 'student'>) => boolean;
 }
 
+import { API_BASE_URL } from '../config';
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = `${API_BASE_URL}/api`;
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);

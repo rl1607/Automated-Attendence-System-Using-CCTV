@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
@@ -21,7 +22,7 @@ const CCTV: React.FC = () => {
 
   const fetchCameras = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/cameras');
+      const res = await axios.get(`${API_BASE_URL}/api/cameras`);
       setCameras(res.data);
     } catch (err) {
       console.warn("API camera fetch failed, using fallback list.");
@@ -50,7 +51,7 @@ const CCTV: React.FC = () => {
         fps,
         resolution
       };
-      await axios.post('http://localhost:5000/api/cameras', payload);
+      await axios.post(`${API_BASE_URL}/api/cameras`, payload);
       setShowAddForm(false);
       setName('');
       setRtspUrl('');
