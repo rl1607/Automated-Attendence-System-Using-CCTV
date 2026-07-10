@@ -1,6 +1,6 @@
 # Attendance Tracker 👁️
 
-This is an automated attendance system that uses face recognition and CCTV/IP cameras to mark students' attendance in real time.
+This is an automated attendance system that uses face recognition and camera to mark students' attendance in real time.
 
 ### What it does:
 * **Register Students**: A simple form to register new students. It opens their webcam, captures a selfie, and saves their face signature.
@@ -9,7 +9,4 @@ This is an automated attendance system that uses face recognition and CCTV/IP ca
 * **Logs & Reports**: Keeps a clean list of all students and attendance history, which you can easily search and export as CSV files.
 * **Broadcast Messages**: Allows teachers and admins to send quick notifications (via email, SMS, or WhatsApp) to parents and students regarding low attendance.
 
-### Tech stack:
-* **Frontend**: React (Vite) with TypeScript and Tailwind CSS.
-* **Backend**: Node.js & Express server connected to MongoDB.
-* **AI Service**: Python FastAPI using OpenCV and DeepFace models to analyze camera feeds and compare face embeddings.
+ 
