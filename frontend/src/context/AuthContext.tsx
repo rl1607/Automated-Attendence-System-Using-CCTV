@@ -38,6 +38,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
     }
     setIsLoading(false);
+
+    // Response interceptor to handle session expiry
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          const msg = error.response.data?.message;
+          if (msg === 'Invalid or expired access token' || msg === 'User not found or suspended') {
+            console.warn("Session expired or invalid. Clearing token...");
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            setUser(null);
+            setToken(null);
+            delete axios.defaults.headers.common['Authorization'];
+            window.location.href = '/login';
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
